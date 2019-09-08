@@ -1,0 +1,13 @@
+body{
+    background-color: black;
+    color: white;
+}
+
+.gameSection{
+    margin: 0 auto;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
+}
