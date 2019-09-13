@@ -22,7 +22,8 @@
             parent: "game-container",
             scene: {
                 preload: preload,
-                create: create
+                create: create,
+                update: update
             }
             };
         
@@ -43,10 +44,68 @@
 
                 // Parameters: layer name (or index) from Tiled, tileset, x, y
                 const ground = map.createDynamicLayer("Ground", tileset, 0, 0);
-                ground.setScale(0.4); // scale to half
-                ground.setOrigin(0.5);
-                ground.resizeWorld();
-                
+                ground.setScale(1); // scale to half
+                ground.setOrigin(0,0);
+
+                var camera = this.cameras.main;
+
+                // Set up the arrows to control the camera
+                const cursors = this.input.keyboard.createCursorKeys();
+
+                // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
+                camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+                camera.scrollX = 450;
+                camera.scrollY = 450;
+
+                // Help text that has a "fixed" position on the screen
+                this.add
+                    .text(16, 16, "Map preview. Arrow keys to move", {
+                    font: "18px monospace",
+                    fill: "#ffffff",
+                    padding: { x: 20, y: 10 },
+                    backgroundColor: "#000000"
+                    })
+                    .setScrollFactor(0);   
+
+                this.input.keyboard.on('keydown_UP', function () {
+                    if(camera.scrollX == 450){
+                        if(camera.scrollY != 888){
+                            camera.pan(850, 0, 2000, 'Power2');
+                        } else {
+                            camera.pan(850, 750, 2000, 'Power2');
+                        }
+                    }
+                });
+                this.input.keyboard.on('keydown_LEFT', function () {
+                    if(camera.scrollY == 450){
+                        if(camera.scrollX != 874){
+                            camera.pan(0, 750, 2000, 'Power2');
+                        } else {
+                            camera.pan(850, 750, 2000, 'Power2');
+                        }
+                    }
+                });
+                this.input.keyboard.on('keydown_DOWN', function () {
+                    if(camera.scrollX == 450){
+                        if(camera.scrollY != 0){
+                            camera.pan(850, 1500, 2000, 'Power2');
+                        } else {
+                            camera.pan(850, 750, 2000, 'Power2');
+                        }
+                    }
+                });
+                this.input.keyboard.on('keydown_RIGHT', function () {
+                    if(camera.scrollY == 450){
+                        if(camera.scrollX != 0){
+                            camera.pan(1500, 750, 2000, 'Power2');
+                        } else {
+                            camera.pan(850, 750, 2000, 'Power2');
+                        }
+                    }
+                });
+            }
+
+            function update(time, delta) {
             }
         </script>
     </section>
