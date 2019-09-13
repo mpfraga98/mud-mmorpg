@@ -15,7 +15,8 @@
         <script>
             const config = {
             type: Phaser.AUTO,
-            width: 1000,
+            width: 800,
+            height: 600,
             zoom: 0, // Since we're working with 16x16 pixel tiles, let's scale up the canvas by 3x
             pixelArt: true, // Force the game to scale images up crisply
             parent: "game-container",
@@ -28,12 +29,12 @@
             var game = new Phaser.Game(config);
 
             function preload() {
+                
                 this.load.image("tiles", "./public/maps/tmw_desert_spacing.png");
                 this.load.tilemapTiledJSON("map", "./public/maps/testmap.json");
             }
 
             function create() {
-                console.log(this.cache.tilemap.get('map').data);
                 const map = this.make.tilemap({ key: "map" });
 
                 // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
@@ -41,7 +42,11 @@
                 const tileset = map.addTilesetImage("Desert", "tiles");
 
                 // Parameters: layer name (or index) from Tiled, tileset, x, y
-                const ground = map.createStaticLayer("Ground", tileset, 0, 0);
+                const ground = map.createDynamicLayer("Ground", tileset, 0, 0);
+                ground.setScale(0.4); // scale to half
+                ground.setOrigin(0.5);
+                ground.resizeWorld();
+                
             }
         </script>
     </section>
